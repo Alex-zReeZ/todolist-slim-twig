@@ -9,5 +9,14 @@
 </head>
 <body>
 <h1>Welcome to my Todo list</h1>
+
+<form action="/" method="post">
+    <label for="todo">Todo:</label>
+    <input type="text" id="todo" name="todo" placeholder="enter a todo" required>
+    <button type="submit" name="submitTodo">Add</button>
+</form>
+
+{% for todo in todos %}
+    <div>{{ todo.name|e }}</div>
+{% endfor %}
 </body>
-</html>

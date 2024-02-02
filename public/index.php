@@ -23,13 +23,39 @@ $app->add(TwigMiddleware::create($app, $twig));
 $app->addRoutingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
-$app->get('/toto/{nom}', function (Request $request, Response $response, $args) {
+$app->get('/toto', function (Request $request, Response $response) {
     global $pdo;
     $view = Twig::fromRequest($request);
-    $todos = $pdo->prepare("select * from todo")->fetchAll();
+
+    $statement = $pdo->prepare("SELECT * FROM todo");
+    $statement->execute();
+
+    $todos = $statement->fetchAll();
+
     return $view->render($response, 'user.twig', [
         'todos' => $todos
     ]);
 });
+
+$app->post('/', function ($request, $response) {
+    global $pdo;
+
+    $todoName = $request->getParsedBody()['todo'] ?? null;
+
+    if ($todoName) {
+        $statement = $pdo->prepare("INSERT INTO todo (name) VALUES (:name)");
+        $statement->bindParam(':name', $todoName);
+        $statement->execute();
+    }
+
+    $todos = $pdo->query("SELECT * FROM todo")->fetchAll();
+
+    $view = Twig::fromRequest($request);
+    return $view->render($response, 'user.twig', [
+        'todos' => $todos
+    ]);
+});
+
+
 
 $app->run();

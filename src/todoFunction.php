@@ -33,7 +33,8 @@ $app->post('/', function ($request, $response) {
     global $pdo;
 
     $todoName = $request->getParsedBody()['todo'];
-    $resetTodos = $request->getParsedBody('resetDatabase');
+    $resetTodos = $request->getParsedBody()['resetDatabase'];
+    $removeTodo = $request->getParsedBody()['removeTodo'];
 
 
     if ($todoName) {
@@ -43,7 +44,12 @@ $app->post('/', function ($request, $response) {
     } elseif ($resetTodos) {
         $statement = $pdo->prepare("DELETE FROM todo");
         $statement->execute();
+    } elseif ($removeTodo) {
+        $id = $removeTodo;
+        $statement = $pdo->prepare('DELETE FROM todo WHERE id = :id;');
+        $statement->execute(['id' => $id]);
     }
+
 
     $todos = $pdo->query("SELECT * FROM todo")->fetchAll();
 

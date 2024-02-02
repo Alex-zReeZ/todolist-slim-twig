@@ -1,0 +1,23 @@
+{
+    "name": "alex-zreez/slim-todo",
+    "description": "todo list in slim php",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "AlexZreez\\SlimTodo\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alex-zReeZ",
+            "email": "alexbeck220@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.6",
+        "slim/twig-view": "^3.3",
+      "ext-pdo": "*"
+    }
+}

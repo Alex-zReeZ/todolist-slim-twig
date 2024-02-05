@@ -98,4 +98,20 @@ $app->get('/todo/sortAZ', function ($request, $response) {
     ]);
 });
 
+// Sort by inverse alphabetical order
+$app->get('/todo/sortZA', function ($request, $response) {
+    global $pdo;
+    $view = Twig::fromRequest($request);
+
+    $stmt = $pdo->prepare('SELECT * FROM todo ORDER BY name desc');
+    $stmt->execute();
+
+    $todos = $stmt->fetchAll();
+    $response = $view->render($response, 'user.twig', [
+        'todos' => $todos,
+    ]);
+
+    $response = $response->withHeader('Location', '/todo');
+    return $response;
+});
 $app->run();

@@ -19,10 +19,10 @@
 
 <div class="all-button">
     <div class="sort-button">
-        <form action="">
+        <form action="/todo/sortAZ" method="get">
             <button type="submit" name="sortAZ" class="btn btn-sort">Sort A to Z</button>
         </form>
-        <form action="">
+        <form action="/todo/sortZA" method="get">
             <button type="submit" name="sortZA" class="btn btn-sort">Sort Z to A</button>
         </form>
     </div>
@@ -30,8 +30,6 @@
     <form action="/todo/reset" method="post" class="todo-form-reset">
         <button type="submit" name="resetDatabase" class="btn btn-reset-form ">Reset all todos</button>
     </form>
-
-
 </div>
 <ul class="todo-list">
     {% for todo in todos %}

@@ -36,6 +36,7 @@
         <li class="todo-item">
             <form action="/todo/modify" class="todo-item-form" method="post">
                 <label>
+                    <input type="checkbox" name="checked" class="checkbox">
                     <input type="text" name="modifyTodo" value="{{ todo.name|e }}" class="hide-input">
                     <input type="hidden" name="todoId" value="{{ todo.id }}">
                 </label>

@@ -102,3 +102,7 @@ input  {
 .modify-button {
     padding-left: 400px;
 }
+
+.checkbox {
+    width: 50px;
+}

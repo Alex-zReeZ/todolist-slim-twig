@@ -124,7 +124,7 @@ $app->get('/todo/{name}', function ($request, $response, $args) {
 
     $name = $args['name'];
 
-    $stmt = $pdo->prepare("SELECT * FROM todo WHERE name = :name");
+    $stmt = $pdo->prepare("SELECT * FROM todo WHERE name LIKE :name");
     $stmt->bindParam(':name', $name);
     $stmt->execute();
 
@@ -132,6 +132,26 @@ $app->get('/todo/{name}', function ($request, $response, $args) {
 
     return $view->render($response, 'todo.twig', [
         'todos' => [$todo]
+    ]);
+});
+
+// Show the todo written in the search bar
+$app->get('/search', function ($request, $response) {
+    global $pdo;
+
+    $view = Twig::fromRequest($request);
+
+    $searchTerm = $request->getQueryParams()['searchTodo'];
+
+    $stmt = $pdo->prepare("SELECT * FROM todo WHERE name LIKE :searchTerm");
+    $str = "%$searchTerm%";
+    $stmt->bindParam(':searchTerm', $str);
+    $stmt->execute();
+
+    $todos = $stmt->fetchAll();
+
+    return $view->render($response, 'todo.twig', [
+        'todos' => $todos
     ]);
 });
 

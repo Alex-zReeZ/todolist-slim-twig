@@ -19,6 +19,8 @@ $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
 require "connectToDatabase.php";
 
+// All function
+
 // display all the todos
 $app->get('/todo', function (Request $request, Response $response) {
     global $pdo;
@@ -107,11 +109,30 @@ $app->get('/todo/sortZA', function ($request, $response) {
     $stmt->execute();
 
     $todos = $stmt->fetchAll();
-    $response = $view->render($response, 'todo.twig', [
+
+    $response->withHeader('Location', '/todo/{name}');
+    return  $view->render($response, 'todo.twig', [
         'todos' => $todos,
     ]);
-
-    $response = $response->withHeader('Location', '/todo');
-    return $response;
 });
+
+// Show the todo written in the url
+$app->get('/todo/{name}', function ($request, $response, $args) {
+    global $pdo;
+
+    $view = Twig::fromRequest($request);
+
+    $name = $args['name'];
+
+    $stmt = $pdo->prepare("SELECT * FROM todo WHERE name = :name");
+    $stmt->bindParam(':name', $name);
+    $stmt->execute();
+
+    $todo = $stmt->fetch();
+
+    return $view->render($response, 'todo.twig', [
+        'todos' => [$todo]
+    ]);
+});
+
 $app->run();

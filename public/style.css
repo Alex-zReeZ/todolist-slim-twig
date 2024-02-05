@@ -5,6 +5,18 @@ body {
     text-align: center;
 }
 
+.header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 100px ;
+}
+
+.all-button {
+    display: flex;
+    justify-content: space-between;
+    margin: 2% 15%;
+}
+
 .title {
     color: #333;
     margin-top: 30px;
@@ -20,13 +32,16 @@ body {
     color: #333;
 }
 
+.hide-input {
+    border-color: transparent;
+}
+
 input  {
     width: 300px;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-bottom: 10px;
 }
 
 .btn {
@@ -35,7 +50,6 @@ input  {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-right: 10px;
 }
 
 .btn-add {
@@ -48,8 +62,25 @@ input  {
     color: white;
 }
 
+.btn-reset-form{
+    background-color: #f44336;
+    color: white;
+    margin: 2%;
+}
+
+.btn-sort {
+    background-color: dimgrey;
+    color: white;
+    margin: 2%;
+}
+
 .btn:hover {
-    background-color: #45a049;
+    background-color: black;
+}
+
+.sort-button {
+    display: flex;
+    gap: 1%;
 }
 
 .todo-list {
@@ -66,4 +97,8 @@ input  {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
+}
+
+.modify-button {
+    padding-left: 400px;
 }

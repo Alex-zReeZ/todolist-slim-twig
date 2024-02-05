@@ -16,19 +16,34 @@
     <input type="text" id="todo" name="todo" placeholder="enter a todo" class="form-input">
     <button type="submit" name="submitTodo" class="btn btn-add">Add</button>
 </form>
-<form action="/todo/reset" method="post" class="todo-form-reset">
-    <button type="submit" name="resetDatabase" class="btn btn-reset">Reset all todos</button>
-</form>
 
+<div class="all-button">
+    <div class="sort-button">
+        <form action="">
+            <button type="submit" name="sortAZ" class="btn btn-sort">Sort A to Z</button>
+        </form>
+        <form action="">
+            <button type="submit" name="sortZA" class="btn btn-sort">Sort Z to A</button>
+        </form>
+    </div>
+
+    <form action="/todo/reset" method="post" class="todo-form-reset">
+        <button type="submit" name="resetDatabase" class="btn btn-reset-form ">Reset all todos</button>
+    </form>
+
+
+</div>
 <ul class="todo-list">
     {% for todo in todos %}
         <li class="todo-item">
             <form action="/todo/modify" class="todo-item-form" method="post">
                 <label>
-                    <input type="text" name="modifyTodo" value="{{ todo.name|e }}">
+                    <input type="text" name="modifyTodo" value="{{ todo.name|e }}" class="hide-input">
                     <input type="hidden" name="todoId" value="{{ todo.id }}">
                 </label>
-                <button class="btn btn-add" type="submit" name="editTodoButton">confirm edit</button>
+                <span class="modify-button">
+                    <button class="btn btn-add" type="submit" name="editTodoButton">confirm edit</button>
+                </span>
             </form>
 
             <form action="/todo/remove" method="post">

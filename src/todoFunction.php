@@ -17,10 +17,9 @@ $app->add(TwigMiddleware::create($app, $twig));
 $app->addRoutingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
-// Connect to the database
 require "connectToDatabase.php";
 
-// Route to display the list of tasks
+// display all the todos
 $app->get('/todo', function (Request $request, Response $response) {
     global $pdo;
     $view = Twig::fromRequest($request);
@@ -35,7 +34,7 @@ $app->get('/todo', function (Request $request, Response $response) {
     ]);
 });
 
-// Route to add a new task
+// Add a new todo
 $app->post('/todo/add', function ($request, $response) {
     global $pdo;
 
@@ -50,7 +49,7 @@ $app->post('/todo/add', function ($request, $response) {
     return $response->withHeader('Location', '/todo')->withStatus(302);
 });
 
-// Route to reset all tasks
+// Reset all todos
 $app->post('/todo/reset', function ($request, $response) {
     global $pdo;
 
@@ -60,7 +59,7 @@ $app->post('/todo/reset', function ($request, $response) {
     return $response->withHeader('Location', '/todo')->withStatus(302);
 });
 
-// Route to remove a specific task
+// Remove a specific todos
 $app->post('/todo/remove', function ($request, $response) {
     global $pdo;
 
@@ -72,7 +71,7 @@ $app->post('/todo/remove', function ($request, $response) {
     return $response->withHeader('Location', '/todo')->withStatus(302);
 });
 
-// Route to modify a task
+// Modify a todos
 $app->post('/todo/modify', function ($request, $response) {
     global $pdo;
 
@@ -85,5 +84,19 @@ $app->post('/todo/modify', function ($request, $response) {
     return $response->withHeader('Location', '/todo')->withStatus(302);
 });
 
+$app->get('/todo/sortAZ', function ($request, $response) {
+    global $pdo, $row;
+
+    $sort = $request->getParsedBody()['sortAZ'];
+
+    if ($sort) {
+        $stmt = $pdo->prepare('SELECT * FROM todo ORDER BY name');
+        $stmt->execute();
+    }
+
+    $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return $response->withHeader('Location', '/todo')->withStatus(302);
+});
 
 $app->run();

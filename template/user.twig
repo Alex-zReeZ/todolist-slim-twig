@@ -20,14 +20,13 @@
     <button type="submit" name="resetDatabase" class="btn btn-reset">Reset all todos</button>
 </form>
 
-
 <ul class="todo-list">
     {% for todo in todos %}
         <li class="todo-item">
-            <form action="/todo" class="todo-item-form" method="get">
+            <form action="/todo/modify" class="todo-item-form" method="post">
                 <label>
                     <input type="text" name="modifyTodo" value="{{ todo.name|e }}">
-                    <input type="hidden" name="removeTodo" value="{{ todo.id }}">
+                    <input type="hidden" name="todoId" value="{{ todo.id }}">
                 </label>
                 <button class="btn btn-add" type="submit" name="editTodoButton">confirm edit</button>
             </form>
@@ -39,7 +38,6 @@
         </li>
     {% endfor %}
 </ul>
-
 
 
 </body>

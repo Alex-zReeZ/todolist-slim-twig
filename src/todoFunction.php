@@ -77,12 +77,13 @@ $app->post('/todo/modify', function ($request, $response) {
     global $pdo;
 
     $newValue = $request->getParsedBody()['modifyTodo'];
+    $todoId = $request->getParsedBody()['todoId'];
 
-    $statement = $pdo->prepare('UPDATE todo SET name = :newValue WHERE name = :name');
-    $statement->execute(['name' => $newValue]);
+    $statement = $pdo->prepare('UPDATE todo SET name = :newValue WHERE id = :todoId');
+    $statement->execute(['newValue' => $newValue, 'todoId' => $todoId]);
 
     return $response->withHeader('Location', '/todo')->withStatus(302);
 });
 
-// Run the Slim application
+
 $app->run();

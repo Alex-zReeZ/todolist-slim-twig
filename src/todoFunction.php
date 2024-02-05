@@ -29,7 +29,7 @@ $app->get('/todo', function (Request $request, Response $response) {
 
     $todos = $stmt->fetchAll();
 
-    return $view->render($response, 'user.twig', [
+    return $view->render($response, 'todo.twig', [
         'todos' => $todos
     ]);
 });
@@ -93,7 +93,7 @@ $app->get('/todo/sortAZ', function ($request, $response) {
     $stmt->execute();
 
     $todos = $stmt->fetchAll();
-    return $view->render($response, 'user.twig', [
+    return $view->render($response, 'todo.twig', [
         'todos' => $todos,
     ]);
 });
@@ -107,7 +107,7 @@ $app->get('/todo/sortZA', function ($request, $response) {
     $stmt->execute();
 
     $todos = $stmt->fetchAll();
-    $response = $view->render($response, 'user.twig', [
+    $response = $view->render($response, 'todo.twig', [
         'todos' => $todos,
     ]);
 

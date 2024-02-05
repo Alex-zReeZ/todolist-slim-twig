@@ -17,10 +17,10 @@ $app->add(TwigMiddleware::create($app, $twig));
 $app->addRoutingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
+// Require dataBase
 require "connectToDatabase.php";
 
 // All function
-
 // display all the todos
 $app->get('/todo', function (Request $request, Response $response) {
     global $pdo;

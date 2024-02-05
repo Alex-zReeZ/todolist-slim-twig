@@ -11,6 +11,14 @@ body {
     grid-template-rows: 100px ;
 }
 
+.add-search-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 3%;
+    gap: 6%;
+}
+
 .all-button {
     display: flex;
     justify-content: space-between;

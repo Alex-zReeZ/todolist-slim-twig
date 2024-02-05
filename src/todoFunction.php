@@ -6,16 +6,22 @@ use Slim\Views\Twig;
 use Slim\Factory\AppFactory;
 use Slim\Views\TwigMiddleware;
 
+// Create Slim application
 $app = AppFactory::create();
+
+// Configure Twig for views
 $twig = Twig::create(__DIR__ . '/../template', ['cache' => false]);
 $app->add(TwigMiddleware::create($app, $twig));
 
+// Routing middleware and error handling
 $app->addRoutingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
+// Connect to the database
 require "connectToDatabase.php";
 
-$app->get('/', function (Request $request, Response $response) {
+// Route to display the list of tasks
+$app->get('/todo', function (Request $request, Response $response) {
     global $pdo;
     $view = Twig::fromRequest($request);
 
@@ -29,37 +35,54 @@ $app->get('/', function (Request $request, Response $response) {
     ]);
 });
 
-$app->post('/', function ($request, $response) {
+// Route to add a new task
+$app->post('/todo/add', function ($request, $response) {
     global $pdo;
 
     $todoName = $request->getParsedBody()['todo'];
-    $resetTodos = $request->getParsedBody()['resetDatabase'];
-    $removeTodo = $request->getParsedBody()['removeTodo'];
-
 
     if ($todoName) {
         $statement = $pdo->prepare("INSERT INTO todo (name) VALUES (:name)");
-        $statement->bindParam(':name', $todoName);
+        $statement->bindParam('name', $todoName);
         $statement->execute();
-    } elseif ($resetTodos) {
-        $statement = $pdo->prepare("DELETE FROM todo");
-        $statement->execute();
-    } elseif ($removeTodo) {
-        $id = $removeTodo;
-        $statement = $pdo->prepare('DELETE FROM todo WHERE id = :id;');
-        $statement->execute(['id' => $id]);
     }
 
-
-    $todos = $pdo->query("SELECT * FROM todo")->fetchAll();
-
-
-    $view = Twig::fromRequest($request);
-    return $view->render($response, 'user.twig', [
-        'todos' => $todos
-    ]);
+    return $response->withHeader('Location', '/todo')->withStatus(302);
 });
 
+// Route to reset all tasks
+$app->post('/todo/reset', function ($request, $response) {
+    global $pdo;
 
+    $statement = $pdo->prepare("DELETE FROM todo");
+    $statement->execute();
 
+    return $response->withHeader('Location', '/todo')->withStatus(302);
+});
+
+// Route to remove a specific task
+$app->post('/todo/remove', function ($request, $response) {
+    global $pdo;
+
+    $id = $request->getParsedBody()['removeTodo'];
+
+    $statement = $pdo->prepare('DELETE FROM todo WHERE id = :id;');
+    $statement->execute(['id' => $id]);
+
+    return $response->withHeader('Location', '/todo')->withStatus(302);
+});
+
+// Route to modify a task
+$app->post('/todo/modify', function ($request, $response) {
+    global $pdo;
+
+    $newValue = $request->getParsedBody()['modifyTodo'];
+
+    $statement = $pdo->prepare('UPDATE todo SET name = :newValue WHERE name = :name');
+    $statement->execute(['name' => $newValue]);
+
+    return $response->withHeader('Location', '/todo')->withStatus(302);
+});
+
+// Run the Slim application
 $app->run();

@@ -1,6 +1,5 @@
 <?php
 
-
 $host = __DIR__ . '/../database.db';
 $dsn = "sqlite:$host";
 $options = [

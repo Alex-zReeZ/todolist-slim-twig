@@ -20,7 +20,7 @@ body {
     color: #333;
 }
 
-.form-input {
+input  {
     width: 300px;
     padding: 10px;
     font-size: 16px;
@@ -59,23 +59,11 @@ body {
 }
 
 .todo-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 1% 15%;
     background-color: #fff;
     padding: 10px;
-    margin: 5px;
     border: 1px solid #ddd;
     border-radius: 5px;
-}
-
-/* Add some responsiveness for smaller screens */
-@media (max-width: 600px) {
-    .form-input {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    .btn {
-        width: 100%;
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
 }

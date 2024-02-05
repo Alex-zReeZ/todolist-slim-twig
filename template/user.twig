@@ -23,20 +23,23 @@
 
 <ul class="todo-list">
     {% for todo in todos %}
-        <form action="" class="todo-item-form" method="POST">
-            <li class="todo-item">
+        <li class="todo-item">
+            <form action="/todo" class="todo-item-form" method="get">
                 <label>
                     <input type="text" name="modifyTodo" value="{{ todo.name|e }}">
                     <input type="hidden" name="removeTodo" value="{{ todo.id }}">
                 </label>
                 <button class="btn btn-add" type="submit" name="editTodoButton">confirm edit</button>
-                <form action="/todo/remove" method="post">
-                    <button class="btn btn-reset" type="submit" name="removeTodoButton">remove todo</button>
-                </form>
-            </li>
-        </form>
+            </form>
+
+            <form action="/todo/remove" method="post">
+                <input type="hidden" name="removeTodo" value="{{ todo.id }}">
+                <button class="btn btn-reset" type="submit" name="removeTodoButton">remove todo</button>
+            </form>
+        </li>
     {% endfor %}
 </ul>
+
 
 
 </body>

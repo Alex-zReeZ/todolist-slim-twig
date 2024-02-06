@@ -20,6 +20,12 @@ $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 // Require dataBase
 require "connectToDatabase.php";
 
+
+$showMessage = isset($_SESSION['ShowMessage']) && $_SESSION['ShowMessage'];
+if ($showMessage) {
+    $_SESSION['ShowMessage'] = false;
+}
+
 // All function
 // display all the todos
 $app->get('/todo', function (Request $request, Response $response) {
@@ -31,10 +37,13 @@ $app->get('/todo', function (Request $request, Response $response) {
 
     $todos = $stmt->fetchAll();
 
+    $showMessage = isset($_SESSION['ShowMessage']) && $_SESSION['ShowMessage'];
     return $view->render($response, 'todo.twig', [
-        'todos' => $todos
+        'todos' => $todos,
+        'showMessage' => $showMessage,
     ]);
 });
+
 
 // Add a new todo
 $app->post('/todo/add', function ($request, $response) {
@@ -42,13 +51,14 @@ $app->post('/todo/add', function ($request, $response) {
 
     $todoName = $request->getParsedBody()['todo'];
 
-    if ($todoName && strlen($todoName) >= 5 && strlen($todoName) <= 100) {
-        $stmt = $pdo->prepare("INSERT INTO todo (name) VALUES (:name)");
-        $stmt->bindParam('name', $todoName);
-        $stmt->execute();
-    } else {
-        return $response->withHeader('Location', '/todo')->withStatus(302);
-    }
+    $stmt = $pdo->prepare("INSERT INTO todo (name) VALUES (:name)");
+    $stmt->bindParam('name', $todoName);
+    $stmt->execute();
+
+    $_SESSION['AddedTodo'] = "The todo has been added";
+    $_SESSION['ShowMessage'] = true;
+
+    return $response->withHeader('Location', '/todo')->withStatus(302);
 });
 
 // Reset all todos
@@ -182,7 +192,6 @@ $app->post('/todo/done/remove', function ($request, $response) {
 
     return $response->withHeader('Location', '/todo/done/list')->withStatus(302);
 });
-
 
 // Cancel todos done (put it back in todolist)
 // $app->post('')

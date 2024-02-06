@@ -23,6 +23,9 @@
         <button class="btn btn-back " type="submit" name="goBack">See all todos</button>
     </form>
 </div>
+{% if showMessage %}
+    <span> {{ $_SESSION['AddedTodo'] }} </span>
+{% endif %}
 
 <ul class="todo-list">
     {% for done in dones %}
@@ -37,7 +40,7 @@
                 </span>
             </form>
 
-            <form action="/todo/done/remove" method="post" onsubmit="return confirm('Are you sure you want to remove this todo?');">
+            <form action="/todo/done/remove" method="post">
                 <input type="hidden" name="removeTodoDone" value="{{ done.id }}">
                 <button class="btn btn-reset" type="submit" name="removeTodoButton">remove todo</button>
             </form>

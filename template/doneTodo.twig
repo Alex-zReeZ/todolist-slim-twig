@@ -23,9 +23,6 @@
         <button class="btn btn-back " type="submit" name="goBack">See all todos</button>
     </form>
 </div>
-{% if showMessage %}
-    <span> {{ $_SESSION['AddedTodo'] }} </span>
-{% endif %}
 
 <ul class="todo-list">
     {% for done in dones %}

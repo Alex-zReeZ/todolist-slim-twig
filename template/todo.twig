@@ -48,6 +48,11 @@
         <button type="submit" name="resetDatabase" class="btn btn-reset-form ">Reset all todos</button>
     </form>
 </div>
+
+{% if showMessage %}
+    <span> {{ showMessage }} BONSOIR</span>
+{% endif %}
+
 <ul class="todo-list">
     {% for todo in todos %}
         <li class="todo-item">

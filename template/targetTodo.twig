@@ -11,6 +11,18 @@
 </head>
 <body>
 <h1 class="title"> You are looking for {{ name }}</h1>
+<div class="go-back-button">
+    <form action="/search" method="get">
+        <label>
+            <input type="text" name="searchTodo" placeholder="Search a todo">
+        </label>
+        <button type="submit" name="search" class="btn btn-add">Search</button>
+    </form>
+
+    <form action="/todo" method="get">
+        <button class="btn btn-back " type="submit" name="goBack">See all todos</button>
+    </form>
+</div>
 
 <ul class="todo-list">
     {% for todo in todos %}

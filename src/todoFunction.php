@@ -116,6 +116,29 @@ $app->get('/todo/sortZA', function ($request, $response) {
     ]);
 });
 
+// Show todo that were marked done
+$app->get('/todo/done', function ($request, $response) {
+    die("salut");
+    global $pdo;
+
+    $view = Twig::fromRequest($request);
+
+    $doneTodo = $request->getUserInfo()['checked'];
+
+    $stmt = $pdo->prepare("select name from todo where name = :name");
+    $deleteData = $pdo->prepare('DELETE FROM todo WHERE id = :id;');
+    $addData = $pdo->prepare("INSERT INTO done (name) VALUES (:name)");
+    $stmt->execute(['name' => $doneTodo]);
+    $deleteData->execute(['id' => $doneTodo]);
+    $addData->execute(['name' => $doneTodo]);
+
+    $todos = $stmt->fetchAll();
+
+    return $view->render($response, 'doneTodos.twig', [
+        'todos' => $todos
+    ]);
+});
+
 // Show the todo written in the url
 $app->get('/todo/{name}', function ($request, $response, $args) {
     global $pdo;
@@ -130,7 +153,7 @@ $app->get('/todo/{name}', function ($request, $response, $args) {
 
     $todo = $stmt->fetch();
 
-    return $view->render($response, 'todo.twig', [
+    return $view->render($response, 'TargetTodo.twig', [
         'todos' => [$todo]
     ]);
 });
@@ -150,7 +173,7 @@ $app->get('/search', function ($request, $response) {
 
     $todos = $stmt->fetchAll();
 
-    return $view->render($response, 'todo.twig', [
+    return $view->render($response, 'targetTodo.twig', [
         'todos' => $todos
     ]);
 });

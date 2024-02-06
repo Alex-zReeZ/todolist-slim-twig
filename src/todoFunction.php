@@ -42,13 +42,13 @@ $app->post('/todo/add', function ($request, $response) {
 
     $todoName = $request->getParsedBody()['todo'];
 
-    if ($todoName) {
+    if ($todoName && strlen($todoName) >= 5 && strlen($todoName) <= 100) {
         $stmt = $pdo->prepare("INSERT INTO todo (name) VALUES (:name)");
         $stmt->bindParam('name', $todoName);
         $stmt->execute();
+    } else {
+        return $response->withHeader('Location', '/todo')->withStatus(302);
     }
-
-    return $response->withHeader('Location', '/todo')->withStatus(302);
 });
 
 // Reset all todos
@@ -177,18 +177,10 @@ $app->post('/todo/done/remove', function ($request, $response) {
 
     $id = $request->getParsedBody()['removeTodoDone'];
 
-    if (!is_numeric($id)) {
-        return $response->withJson(['error' => 'Invalid ID'], 400);
-    }
-
     $stmt = $pdo->prepare('DELETE FROM done WHERE id = :id;');
     $stmt->execute(['id' => $id]);
 
-    if ($stmt->rowCount() === 0) {
-        return $response->withJson(['error' => 'Todo not found'], 404);
-    }
-
-    return $response->withHeader('Location', '/todo/done')->withStatus(302);
+    return $response->withHeader('Location', '/todo/done/list')->withStatus(302);
 });
 
 

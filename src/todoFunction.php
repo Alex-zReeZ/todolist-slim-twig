@@ -149,14 +149,14 @@ $app->post('/todo/done', function ($request, $response) {
     $removeData = $pdo->prepare("DELETE FROM todo WHERE id = :id");
     $removeData->execute(['id' => $postData]);
 
-    $done = $pdo->query("SELECT * FROM done")->fetchAll();
+    $dones = $pdo->query("SELECT * FROM done")->fetchAll();
 
     return $view->render($response, 'doneTodo.twig', [
-        'done' => $done
+        'dones' => $dones
     ]);
 });
 
-/*// Show done todos
+// Show done todos
 $app->get('/todo/done/list', function (Request $request, Response $response) {
     global $pdo;
     $view = Twig::fromRequest($request);
@@ -164,12 +164,12 @@ $app->get('/todo/done/list', function (Request $request, Response $response) {
     $stmt = $pdo->prepare("SELECT * FROM done");
     $stmt->execute();
 
-    $done = $stmt->fetchAll();
+    $dones = $stmt->fetchAll();
 
     return $view->render($response, 'doneTodo.twig', [
-        'done' => $done
+        'dones' => $dones
     ]);
-});*/
+});
 
 // Delete todo from done todos
 $app->post('/todo/done/remove', function ($request, $response) {
@@ -203,7 +203,7 @@ $app->get('/search', function ($request, $response) {
 
     $searchTerm = $request->getQueryParams()['searchTodo'];
 
-    $stmt = $pdo->prepare("SELECT * FROM todo, done WHERE todo.name and done.name LIKE :searchTerm");
+    $stmt = $pdo->prepare("SELECT * FROM todo WHERE name LIKE :searchTerm");
     $str = "%$searchTerm%";
     $stmt->bindParam(':searchTerm', $str);
     $stmt->execute();

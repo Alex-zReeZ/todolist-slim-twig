@@ -46,9 +46,11 @@
 <ul class="todo-list">
     {% for todo in todos %}
         <li class="todo-item">
+            <form action="/todo/done" method="post">
+                <button type="submit" name="done" class="btn btn-reset" value="{{ todo.id }}"> Done </button>
+            </form>
             <form action="/todo/modify" class="todo-item-form" method="post">
                 <label>
-                    <input type="checkbox" name="checked" class="checkbox">
                     <input type="text" name="modifyTodo" value="{{ todo.name|e }}" class="hide-input">
                     <input type="hidden" name="todoId" value="{{ todo.id }}">
                 </label>
@@ -64,6 +66,8 @@
         </li>
     {% endfor %}
 </ul>
+
+
 
 
 </body>

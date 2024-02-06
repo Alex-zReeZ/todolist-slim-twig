@@ -111,30 +111,28 @@ $app->get('/todo/sortZA', function ($request, $response) {
     $todos = $stmt->fetchAll();
 
     $response->withHeader('Location', '/todo/{name}');
-    return  $view->render($response, 'todo.twig', [
+    return $view->render($response, 'todo.twig', [
         'todos' => $todos,
     ]);
 });
 
 // Show todo that were marked done
-$app->get('/todo/done', function ($request, $response) {
-    die("salut");
+$app->post('/todo/done', function ($request, $response) {
     global $pdo;
 
     $view = Twig::fromRequest($request);
 
-    $doneTodo = $request->getUserInfo()['checked'];
+    $postData = $request->getParsedBody()['done'];
 
-    $stmt = $pdo->prepare("select name from todo where name = :name");
-    $deleteData = $pdo->prepare('DELETE FROM todo WHERE id = :id;');
-    $addData = $pdo->prepare("INSERT INTO done (name) VALUES (:name)");
-    $stmt->execute(['name' => $doneTodo]);
-    $deleteData->execute(['id' => $doneTodo]);
-    $addData->execute(['name' => $doneTodo]);
+    $addData = $pdo->prepare("INSERT INTO done (name, id) SELECT name, id FROM todo WHERE id = :id");
+    $addData->execute(['id' => $postData]);
 
-    $todos = $stmt->fetchAll();
+    $removeData = $pdo->prepare("DELETE FROM todo WHERE id = :id");
+    $removeData->execute(['id' => $postData]);
 
-    return $view->render($response, 'doneTodos.twig', [
+    $todos = $pdo->query("SELECT * FROM done")->fetchAll();
+
+    return $view->render($response, 'doneTodo.twig', [
         'todos' => $todos
     ]);
 });
@@ -177,5 +175,7 @@ $app->get('/search', function ($request, $response) {
         'todos' => $todos
     ]);
 });
+
+
 
 $app->run();

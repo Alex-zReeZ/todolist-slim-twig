@@ -92,6 +92,12 @@ input  {
     background-color: black;
 }
 
+.btn-show-done {
+    background-color: darkblue;
+    color: white;
+    margin: 2%;
+}
+
 .sort-button {
     display: flex;
     gap: 1%;

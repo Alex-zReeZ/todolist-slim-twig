@@ -116,27 +116,6 @@ $app->get('/todo/sortZA', function ($request, $response) {
     ]);
 });
 
-// Show todo that were marked done
-$app->post('/todo/done', function ($request, $response) {
-    global $pdo;
-
-    $view = Twig::fromRequest($request);
-
-    $postData = $request->getParsedBody()['done'];
-
-    $addData = $pdo->prepare("INSERT INTO done (name, id) SELECT name, id FROM todo WHERE id = :id");
-    $addData->execute(['id' => $postData]);
-
-    $removeData = $pdo->prepare("DELETE FROM todo WHERE id = :id");
-    $removeData->execute(['id' => $postData]);
-
-    $dones = $pdo->query("SELECT * FROM done")->fetchAll();
-
-    return $view->render($response, 'doneTodo.twig', [
-        'dones' => $dones
-    ]);
-});
-
 // Show the todo written in the url
 $app->get('/todo/{name}', function ($request, $response, $args) {
     global $pdo;
@@ -156,27 +135,41 @@ $app->get('/todo/{name}', function ($request, $response, $args) {
     ]);
 });
 
-// Show the todo written in the search bar
-$app->get('/search', function ($request, $response) {
+// Put the todo into done todo list
+$app->post('/todo/done', function ($request, $response) {
     global $pdo;
 
     $view = Twig::fromRequest($request);
 
-    $searchTerm = $request->getQueryParams()['searchTodo'];
+    $postData = $request->getParsedBody()['done'];
 
-    $stmt = $pdo->prepare("SELECT * FROM todo WHERE name LIKE :searchTerm");
-    $str = "%$searchTerm%";
-    $stmt->bindParam(':searchTerm', $str);
-    $stmt->execute();
+    $addData = $pdo->prepare("INSERT INTO done (name, id) SELECT name, id FROM todo WHERE id = :id");
+    $addData->execute(['id' => $postData]);
 
-    $todos = $stmt->fetchAll();
+    $removeData = $pdo->prepare("DELETE FROM todo WHERE id = :id");
+    $removeData->execute(['id' => $postData]);
 
-    return $view->render($response, 'targetTodo.twig', [
-        'todos' => $todos
+    $done = $pdo->query("SELECT * FROM done")->fetchAll();
+
+    return $view->render($response, 'doneTodo.twig', [
+        'done' => $done
     ]);
 });
 
+/*// Show done todos
+$app->get('/todo/done/list', function (Request $request, Response $response) {
+    global $pdo;
+    $view = Twig::fromRequest($request);
 
+    $stmt = $pdo->prepare("SELECT * FROM done");
+    $stmt->execute();
+
+    $done = $stmt->fetchAll();
+
+    return $view->render($response, 'doneTodo.twig', [
+        'done' => $done
+    ]);
+});*/
 
 // Delete todo from done todos
 $app->post('/todo/done/remove', function ($request, $response) {
@@ -198,5 +191,28 @@ $app->post('/todo/done/remove', function ($request, $response) {
     return $response->withHeader('Location', '/todo/done')->withStatus(302);
 });
 
+
+// Cancel todos done (put it back in todolist)
+// $app->post('')
+
+// Show the todo written in the search bar
+$app->get('/search', function ($request, $response) {
+    global $pdo;
+
+    $view = Twig::fromRequest($request);
+
+    $searchTerm = $request->getQueryParams()['searchTodo'];
+
+    $stmt = $pdo->prepare("SELECT * FROM todo, done WHERE todo.name and done.name LIKE :searchTerm");
+    $str = "%$searchTerm%";
+    $stmt->bindParam(':searchTerm', $str);
+    $stmt->execute();
+
+    $todos = $stmt->fetchAll();
+
+    return $view->render($response, 'targetTodo.twig', [
+        'todos' => $todos
+    ]);
+});
 
 $app->run();

@@ -43,6 +43,24 @@
             </form>
         </li>
     {% endfor %}
+    {% for done in dones %}
+        <li class="todo-item">
+            <form action="/todo/modify" class="todo-item-form" method="post">
+                <label>
+                    <input type="text" name="modifyTodo" value="{{ todo.name|e }}" class="hide-input">
+                    <input type="hidden" name="todoId" value="{{ todo.id }}">
+                </label>
+                <span class="modify-button">
+                    <button class="btn btn-add" type="submit" name="editTodoButton">confirm edit</button>
+                </span>
+            </form>
+
+            <form action="/todo/remove" method="post">
+                <input type="hidden" name="removeTodo" value="{{ todo.id }}">
+                <button class="btn btn-reset" type="submit" name="removeTodoButton">remove todo</button>
+            </form>
+        </li>
+    {% endfor %}
 </ul>
 
 </body>

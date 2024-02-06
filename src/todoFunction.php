@@ -130,15 +130,15 @@ $app->post('/todo/done', function ($request, $response) {
     $removeData = $pdo->prepare("DELETE FROM todo WHERE id = :id");
     $removeData->execute(['id' => $postData]);
 
-    $todos = $pdo->query("SELECT * FROM done")->fetchAll();
+    $dones = $pdo->query("SELECT * FROM done")->fetchAll();
 
     return $view->render($response, 'doneTodo.twig', [
-        'todos' => $todos
+        'dones' => $dones
     ]);
 });
 
 // Show the todo written in the url
-$app->get('/todo/{name}', function ($request, $response, $args) {
+$app->get('/todo/z{name}', function ($request, $response, $args) {
     global $pdo;
 
     $view = Twig::fromRequest($request);

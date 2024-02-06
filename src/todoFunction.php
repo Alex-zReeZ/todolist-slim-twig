@@ -138,7 +138,7 @@ $app->post('/todo/done', function ($request, $response) {
 });
 
 // Show the todo written in the url
-$app->get('/todo/z{name}', function ($request, $response, $args) {
+$app->get('/todo/{name}', function ($request, $response, $args) {
     global $pdo;
 
     $view = Twig::fromRequest($request);
@@ -151,7 +151,7 @@ $app->get('/todo/z{name}', function ($request, $response, $args) {
 
     $todo = $stmt->fetch();
 
-    return $view->render($response, 'TargetTodo.twig', [
+    return $view->render($response, 'targetTodo.twig', [
         'todos' => [$todo]
     ]);
 });
@@ -176,6 +176,27 @@ $app->get('/search', function ($request, $response) {
     ]);
 });
 
+
+
+// Delete todo from done todos
+$app->post('/todo/done/remove', function ($request, $response) {
+    global $pdo;
+
+    $id = $request->getParsedBody()['removeTodoDone'];
+
+    if (!is_numeric($id)) {
+        return $response->withJson(['error' => 'Invalid ID'], 400);
+    }
+
+    $stmt = $pdo->prepare('DELETE FROM done WHERE id = :id;');
+    $stmt->execute(['id' => $id]);
+
+    if ($stmt->rowCount() === 0) {
+        return $response->withJson(['error' => 'Todo not found'], 404);
+    }
+
+    return $response->withHeader('Location', '/todo/done')->withStatus(302);
+});
 
 
 $app->run();

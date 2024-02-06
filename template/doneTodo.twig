@@ -10,7 +10,7 @@
     <title>Document</title>
 </head>
 <body>
-<h1 class="title"> You are looking for {{ name }}</h1>
+<h1 class="title"> Todos done </h1>
 <div class="go-back-button">
     <form action="/search" method="get">
         <label>
@@ -37,13 +37,14 @@
                 </span>
             </form>
 
-            <form action="/todo/remove" method="post">
-                <input type="hidden" name="removeTodo" value="{{ done.id }}">
+            <form action="/todo/done/remove" method="post" onsubmit="return confirm('Are you sure you want to remove this todo?');">
+                <input type="hidden" name="removeTodoDone" value="{{ done.id }}">
                 <button class="btn btn-reset" type="submit" name="removeTodoButton">remove todo</button>
             </form>
         </li>
     {% endfor %}
 </ul>
+
 
 </body>
 </html>

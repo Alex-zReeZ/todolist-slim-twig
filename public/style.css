@@ -1,54 +1,37 @@
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    text-align: center;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #495057;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.header {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 100px ;
+.title {
+    font-size: 2em;
+    margin-top: 30px;
 }
 
 .add-search-button {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: 3%;
-    gap: 6%;
-}
-
-.all-button {
-    display: flex;
     justify-content: space-between;
-    margin: 2% 15%;
-}
-
-.title {
-    color: #333;
-    margin-top: 30px;
-}
-
-.todo-form {
+    width: 60%;
     margin-top: 20px;
 }
 
-.form-label {
-    display: block;
-    margin-bottom: 10px;
-    color: #333;
+form {
+    display: flex;
 }
 
-.hide-input {
-    border-color: transparent;
+label {
+    margin-right: 10px;
 }
 
-input  {
-    width: 300px;
+input[type="text"] {
     padding: 10px;
     font-size: 16px;
-    border: 1px solid #ccc;
+    border: 1px solid #ced4da;
     border-radius: 5px;
 }
 
@@ -58,79 +41,72 @@ input  {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
 }
 
 .btn-add {
-    background-color: #4CAF50;
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-sort {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-show-done {
+    background-color: #ffc107;
+    color: #495057;
+}
+
+.btn-reset-form {
+    background-color: #dc3545;
     color: white;
 }
 
 .btn-reset {
-    background-color: #f44336;
+    background-color: #dc3545;
     color: white;
-}
-
-.btn-reset-form{
-    background-color: #f44336;
-    color: white;
-    margin: 2%;
-}
-
-.btn-back {
-    background-color: dimgrey;
-    color: white;
-    margin: 2%;
-}
-
-.btn-sort {
-    background-color: dimgrey;
-    color: white;
-    margin: 2%;
 }
 
 .btn:hover {
-    background-color: black;
+    background-color: #218838;
 }
 
-.btn-show-done {
-    background-color: darkblue;
-    color: white;
-    margin: 2%;
+.all-button {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    margin-top: 20px;
 }
 
 .sort-button {
     display: flex;
-    gap: 1%;
+    column-gap: 10px;
 }
 
 .todo-list {
     list-style: none;
     padding: 0;
+    width: 60%;
     margin-top: 20px;
 }
 
 .todo-item {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
     display: flex;
     justify-content: space-between;
-    margin: 1% 15%;
-    background-color: #fff;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    align-items: center;
 }
 
 .modify-button {
-    padding-left: 400px;
+    margin-left: 10px;
 }
 
-.checkbox {
-    width: 50px;
+.modify-button .btn {
+    background-color: #007bff;
+    color: white;
 }
-
-.go-back-button {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 2%;
-}
-

@@ -51,12 +51,17 @@ $app->post('/todo/add', function ($request, $response) {
 
     $todoName = $request->getParsedBody()['todo'];
 
-    $stmt = $pdo->prepare("INSERT INTO todo (name) VALUES (:name)");
-    $stmt->bindParam('name', $todoName);
-    $stmt->execute();
+    if (strlen($todoName) >= 3 && strlen($todoName) <= 50) {
+        $stmt = $pdo->prepare("INSERT INTO todo (name) VALUES (:name)");
+        $stmt->bindParam(':name', $todoName);
+        $stmt->execute();
 
-    $_SESSION['AddedTodo'] = "The todo has been added";
-    $_SESSION['ShowMessage'] = true;
+        $_SESSION['AddedTodo'] = "The todo has been added";
+        $_SESSION['ShowMessage'] = true;
+    } else {
+        $_SESSION['AddedTodo'] = "Error: Input length should be between 3 and 50 characters.";
+        $_SESSION['ShowMessage'] = true;
+    }
 
     return $response->withHeader('Location', '/todo')->withStatus(302);
 });
@@ -193,8 +198,6 @@ $app->post('/todo/done/remove', function ($request, $response) {
     return $response->withHeader('Location', '/todo/done/list')->withStatus(302);
 });
 
-// Cancel todos done (put it back in todolist)
-// $app->post('')
 
 // Show the todo written in the search bar
 $app->get('/search', function ($request, $response) {

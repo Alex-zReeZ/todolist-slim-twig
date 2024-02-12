@@ -14,7 +14,7 @@
 <div class="add-search-button">
 
     <form action="/todo/add" method="post">
-        <label for="todo">
+        <label  >
             <input type="text" name="todo" placeholder="Enter a new todo">
         </label>
         <button type="submit" name="submitTodo" class="btn btn-add">Add</button>
@@ -50,14 +50,14 @@
 </div>
 
 {% if showMessage %}
-    <span> {{ showMessage }} BONSOIR</span>
+    <span>{{ AddedTodo }}</span>
 {% endif %}
 
 <ul class="todo-list">
     {% for todo in todos %}
         <li class="todo-item">
             <form action="/todo/done" method="post">
-                <button type="submit" name="done" class="btn btn-reset" value="{{ todo.id }}"> Done </button>
+                <button type="submit" name="done" class="btn btn-add" value="{{ todo.id }}"> Done </button>
             </form>
             <form action="/todo/modify" class="todo-item-form" method="post">
                 <label>

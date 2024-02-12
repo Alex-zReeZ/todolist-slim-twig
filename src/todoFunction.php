@@ -37,9 +37,13 @@ $app->get('/todo', function (Request $request, Response $response) {
 
     $todos = $stmt->fetchAll();
 
+    $message = $_SESSION['AddedTodo'];
+    unset($_SESSION['AddedTodo']);
+
     $showMessage = isset($_SESSION['ShowMessage']) && $_SESSION['ShowMessage'];
     return $view->render($response, 'todo.twig', [
         'todos' => $todos,
+        'AddedTodo' => $message,
         'showMessage' => $showMessage,
     ]);
 });
@@ -55,13 +59,11 @@ $app->post('/todo/add', function ($request, $response) {
         $stmt->bindParam(':name', $todoName);
         $stmt->execute();
 
-        $_SESSION['AddedTodo'] = "The todo has been added";
-        $_SESSION['ShowMessage'] = true;
+        $_SESSION['AddedTodo'] = ["The todo has been added"];
     } else {
-        $_SESSION['AddedTodo'] = "Error: Input length should be between 3 and 50 characters.";
-        $_SESSION['ShowMessage'] = true;
+        $_SESSION['AddedTodo'] = ["Error: Input length should be between 3 and 50 characters."];
     }
-
+    $_SESSION['AddedTodo'];
     return $response->withHeader('Location', '/todo')->withStatus(302);
 });
 
@@ -234,4 +236,5 @@ $app->get('/search', function ($request, $response) {
     ]);
 });
 
+// run app
 $app->run();

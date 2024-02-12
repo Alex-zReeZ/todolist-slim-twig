@@ -123,3 +123,22 @@ input[type="text"] {
     background-color: #495057;
     color: white;
 }
+
+.validation-message {
+    margin-top: 2%;
+    width: 450px;
+    background-color: white;
+    color: green;
+    border-radius: 5px;
+    text-align: center;
+    animation: hideAnimation 0s ease-in 3s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes hideAnimation {
+    to {
+        visibility: hidden;
+        width: 0;
+        height: 0;
+    }
+}

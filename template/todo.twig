@@ -49,8 +49,14 @@
     </form>
 </div>
 
-{% if showMessage %}
-    <span>{{ AddedTodo }}</span>
+{% if AddedTodo %}
+    <div class="validation-message">
+        <ul>
+            {% for message in AddedTodo %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endif %}
 
 <ul class="todo-list">

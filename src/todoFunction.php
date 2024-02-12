@@ -37,13 +37,13 @@ $app->get('/todo', function (Request $request, Response $response) {
 
     $todos = $stmt->fetchAll();
 
-    $message = $_SESSION['AddedTodo'];
-    unset($_SESSION['AddedTodo']);
+    $message = $_SESSION['Messages'];
+    unset($_SESSION['Messages']);
 
     $showMessage = isset($_SESSION['ShowMessage']) && $_SESSION['ShowMessage'];
     return $view->render($response, 'todo.twig', [
         'todos' => $todos,
-        'AddedTodo' => $message,
+        'Messages' => $message,
         'showMessage' => $showMessage,
     ]);
 });
@@ -59,11 +59,10 @@ $app->post('/todo/add', function ($request, $response) {
         $stmt->bindParam(':name', $todoName);
         $stmt->execute();
 
-        $_SESSION['AddedTodo'] = ["The todo has been added"];
+        $_SESSION['Messages'] = ["The todo has been added"];
     } else {
-        $_SESSION['AddedTodo'] = ["Error: Input length should be between 3 and 50 characters."];
+        $_SESSION['Messages'] = ["Error: Input length should be between 3 and 50 characters."];
     }
-    $_SESSION['AddedTodo'];
     return $response->withHeader('Location', '/todo')->withStatus(302);
 });
 
@@ -85,6 +84,8 @@ $app->post('/todo/remove', function ($request, $response) {
 
     $stmt = $pdo->prepare('DELETE FROM todo WHERE id = :id;');
     $stmt->execute(['id' => $id]);
+
+    $_SESSION['Messages'] = ["The todo has successfully been removed"];
 
     return $response->withHeader('Location', '/todo')->withStatus(302);
 });

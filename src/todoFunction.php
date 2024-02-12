@@ -44,7 +44,6 @@ $app->get('/todo', function (Request $request, Response $response) {
     ]);
 });
 
-
 // Add a new todo
 $app->post('/todo/add', function ($request, $response) {
     global $pdo;
@@ -198,6 +197,22 @@ $app->post('/todo/done/remove', function ($request, $response) {
     return $response->withHeader('Location', '/todo/done/list')->withStatus(302);
 });
 
+// Cancel todos done (put it back in todolist)
+$app->post('/todo/undone', function ($request, $response) {
+    global $pdo;
+
+    $postData = $request->getParsedBody()['undone'];
+
+    $addData = $pdo->prepare("INSERT INTO todo (name, id) SELECT name, id FROM done WHERE id = :id");
+    $addData->execute(['id' => $postData]);
+
+    $removeData = $pdo->prepare("DELETE FROM done WHERE id = :id");
+    $removeData->execute(['id' => $postData]);
+
+    $pdo->query("SELECT * FROM todo")->fetchAll();
+
+    return $response->withHeader('Location', '/todo/done/list')->withStatus(302);
+});
 
 // Show the todo written in the search bar
 $app->get('/search', function ($request, $response) {

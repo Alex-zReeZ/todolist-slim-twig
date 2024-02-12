@@ -27,14 +27,14 @@
 <ul class="todo-list">
     {% for done in dones %}
         <li class="todo-item">
+            <form action="/todo/undone" method="post">
+                <button type="submit" name="undone" class="btn btn-add" value="{{ done.id }}"> un done </button>
+            </form>
             <form action="/todo/modify" class="todo-item-form" method="post">
                 <label>
-                    <input type="text" name="modifyTodo" value="{{ done.name|e }}" class="hide-input">
+                    <input type="text" value="{{ done.name|e }}" class="hide-input">
                     <input type="hidden" name="todoId" value="{{ done.id }}">
                 </label>
-                <span class="modify-button">
-                    <button class="btn btn-add" type="submit" name="editTodoButton">confirm edit</button>
-                </span>
             </form>
 
             <form action="/todo/done/remove" method="post">

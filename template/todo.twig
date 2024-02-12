@@ -49,15 +49,16 @@
     </form>
 </div>
 
-{% if AddedTodo %}
+{% if Messages %}
     <div class="validation-message">
         <ul>
-            {% for message in AddedTodo %}
+            {% for message in Messages %}
                 <li>{{ message }}</li>
             {% endfor %}
         </ul>
     </div>
 {% endif %}
+
 
 <ul class="todo-list">
     {% for todo in todos %}

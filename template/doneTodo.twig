@@ -28,7 +28,7 @@
     {% for done in dones %}
         <li class="todo-item">
             <form action="/todo/undone" method="post">
-                <button type="submit" name="undone" class="btn btn-add" value="{{ done.id }}"> un done </button>
+                <button type="submit" name="undone" class="btn btn-add" value="{{ done.id }}"> Undone </button>
             </form>
             <form action="/todo/modify" class="todo-item-form" method="post">
                 <label>
@@ -39,7 +39,7 @@
 
             <form action="/todo/done/remove" method="post">
                 <input type="hidden" name="removeTodoDone" value="{{ done.id }}">
-                <button class="btn btn-reset" type="submit" name="removeTodoButton">remove todo</button>
+                <button class="btn btn-reset" type="submit" name="removeTodoButton">Remove todo</button>
             </form>
         </li>
     {% endfor %}
